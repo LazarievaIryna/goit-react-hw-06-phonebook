@@ -15,14 +15,22 @@ export const ContactForm=()=>{
 
   const handleSubmit=event=>{
     event.preventDefault();
-    contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
-      ? alert(`${name} is already in contacts.`)
-      : dispatch(addContact({
-id: nanoid(),
-name: name,
-number: number
-
-      }));
+    const id = nanoid()
+    const newContact = { name, number, id };
+    
+    const checkedNumber=contacts.find(contact => contact.number === number);
+    
+    if(contacts.some(contact=>contact.name===name)){
+      return alert(`Contact with name "${name}" is already in contacts`);
+    } else if(checkedNumber){
+      return alert(
+        `Contact with number ${checkedNumber.number} is already in  ${checkedNumber.name}`
+      );
+    }
+    else{
+      dispatch(addContact(newContact));
+    }
+    
       setName('');
       setNumber('')
   }
